@@ -1,4 +1,5 @@
-echo 503 >  /sys/class/gpio/export
+#!/bin/sh
+echo 503 > /sys/class/gpio/export
 echo out > /sys/class/gpio/gpio503/direction
 echo 0 > /sys/class/gpio/gpio503/value
 sleep 1
