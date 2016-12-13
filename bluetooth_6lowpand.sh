@@ -117,7 +117,6 @@ echo 1 > /sys/kernel/debug/bluetooth/6lowpan_enable
 sleep 1
 hciconfig hci0 reset
 sleep 1
-/etc/init.d/bluetooth restart
 
 # TASKS on start:
 # TODO: parse for --timeout value
