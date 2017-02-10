@@ -4,4 +4,4 @@ After=bluetooth.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/bluetooth_6lowpand
+ExecStart=/usr/bin/bluetooth_6lowpand -d
