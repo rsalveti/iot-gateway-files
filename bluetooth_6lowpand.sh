@@ -38,6 +38,7 @@ BT_NODE_FILTER="Linaro"
 DEFAULT_HCI_INTERFACE="hci0"
 DEFAULT_SCANNING_WINDOW=5
 DEFAULT_SCANNING_INTERVAL=10
+DEFAULT_DEVICE_JOIN_DELAY=1
 
 # TODO: Enforce maximums
 MAX_SCANNING_WINDOW=30
@@ -153,6 +154,7 @@ LOG_LEVEL	: logging level (Ex: LOG_LEVEL=4)
 HCI_INTERFACE	: alternate hci interface (Ex: HCI_INTERFACE=hci0)
 SCAN_WIN	: scanning search window in seconds (Ex: SCAN_WIN=5)
 SCAN_INT	: scanning interval in seconds (Ex: SCAN_INT=10)
+JOIN_DELAY	: device join delay in seconds (Ex: JOIN_DELAY=1)
 USE_WL		: use-whitelist (Ex: USE_WL=1)
 WL		: whitelist device entry (Ex: WL=##:##:##:##:##:##)
 END_OF_HELP_MARKER
@@ -248,6 +250,7 @@ option_use_whitelist="$(conf_find_value "USE_WL" "0")"
 option_daemonize=0
 option_timeout="$(conf_find_value "SCAN_WIN" "${DEFAULT_SCANNING_WINDOW}")s"
 option_interval="$(conf_find_value "SCAN_INT" "${DEFAULT_SCANNING_INTERVAL}")s"
+option_join_delay="$(conf_find_value "JOIN_DELAY" "${DEFAULT_DEVICE_JOIN_DELAY}")s"
 option_skip_init="$(conf_find_value "SKIP_INIT" "0")"
 
 # parse arguments
@@ -376,6 +379,7 @@ if [ "${option_daemonize}" -eq "1" ]; then
 	write_log ${LOG_LEVEL_DEBUG} "USE_WHITELIST=${option_use_whitelist}"
 	write_log ${LOG_LEVEL_DEBUG} "TIMEOUT=${option_timeout}"
 	write_log ${LOG_LEVEL_DEBUG} "INTERVAL=${option_interval}"
+	write_log ${LOG_LEVEL_DEBUG} "JOIN_DELAY=${option_join_delay}"
 	write_log ${LOG_LEVEL_DEBUG} "SKIP_INIT=${option_skip_init}"
 fi
 
@@ -425,8 +429,8 @@ function find_ipsp_device {
 						   [ "$(conf_check_pattern "WL=${__found_devices}")" -eq "1" ]; then
 							write_log ${LOG_LEVEL_INFO} "FOUND NODE: ${__found_devices}"
 							connect_device ${__found_devices} 1
-							# BUGFIX: wait 1s before continuing avoids a crash in 6lowpan
-							sleep 1s
+							# BUGFIX: waiting before continuing avoids a crash in 6lowpan
+							sleep ${option_join_delay}
 						else
 							write_log ${LOG_LEVEL_DEBUG} "IGNORING NODE: ${__found_devices}"
 						fi
