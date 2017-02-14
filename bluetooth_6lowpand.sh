@@ -18,7 +18,7 @@
 
 set -e
 
-SCRIPT_VERSION="1.00"
+SCRIPT_VERSION="1.01"
 
 # logging
 LOG_LEVEL_ERROR=1
