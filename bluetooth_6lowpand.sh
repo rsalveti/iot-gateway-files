@@ -32,7 +32,8 @@ CONTROLLER_PATH="/sys/kernel/debug/bluetooth/6lowpan_control"
 CONFIG_FILE_DELIMITER="="
 CONFIG_PATH="/etc/bluetooth/bluetooth_6lowpand.conf"
 DAEMON_LOCK_PATH="/var/lock/bluetooth_6lowpand.lock"
-MACADDR_REGEX="^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$"
+MACADDR_REGEX="([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}"
+MACADDR_REGEX_LINE="^${MACADDR_REGEX}$"
 LOGLEVEL_REGEX="^[${LOG_LEVEL_ERROR}-${LOG_LEVEL_VERBOSE_DEBUG}]$"
 BT_NODE_FILTER="Linaro"
 
@@ -322,7 +323,7 @@ while [ "${#}" -gt 0 ]; do
 	"-wladd" | "--whitelist_add")
 		shift
 		__device="${1^^}"
-		if [[ "${__device}" =~ ${MACADDR_REGEX} ]]; then
+		if [[ "${__device}" =~ ${MACADDR_REGEX_LINE} ]]; then
 			result=$(conf_add_entry "WL=${__device}")
 			if [ "${result}" -ne "0" ]; then
 				exit "${result}"
@@ -336,7 +337,7 @@ while [ "${#}" -gt 0 ]; do
 	"-wlrm" | "--whitelist_remove")
 		shift
 		__device="${1^^}"
-		if [[ "${__device}" =~ ${MACADDR_REGEX} ]]; then
+		if [[ "${__device}" =~ ${MACADDR_REGEX_LINE} ]]; then
 			result=$(conf_remove_entry "WL=${__device}")
 			if [ "${result}" -ne "0" ]; then
 				exit "${result}"
@@ -421,7 +422,7 @@ function find_ipsp_device {
 	# Return the first MAC which is followed by BT_NODE_FILTER match
 	local __lines=$(echo ${__command_buf} | tr "\r" "\n")
 	for __line in ${__lines}; do
-		if [[ "${__line}" =~ ${MACADDR_REGEX} ]]; then
+		if [[ "${__line}" =~ ${MACADDR_REGEX_LINE} ]]; then
 			__found_devices=${__line}
 		else
 			if [ ! -z "${__found_devices}" ]; then
