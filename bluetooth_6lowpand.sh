@@ -415,9 +415,6 @@ function find_ipsp_device {
 		fi
 	)
 
-	# Store the list of connect devices in upper case surrounded by []
-	connected_list=$(get_connected_list)
-
 	# Lines will start with MAC and then description broken by returns:
 	# Return the first MAC which is followed by BT_NODE_FILTER match
 	local __lines=$(echo ${__command_buf} | tr "\r" "\n")
@@ -428,6 +425,8 @@ function find_ipsp_device {
 			if [ ! -z "${__found_devices}" ]; then
 				if [ "${option_ignore_filter}" -eq "1" ] ||
 				   [ "${__line}" == "${BT_NODE_FILTER}" ]; then
+					# Store the list of connect devices in upper case surrounded by []
+					connected_list=$(get_connected_list)
 					# check that this node isn't already connected
 					if [[ "${connected_list}" == *"[${__found_devices}]"* ]]; then
 						write_log ${LOG_LEVEL_VERBOSE_DEBUG} "ALREADY CONNECTED: ${__found_devices}"
