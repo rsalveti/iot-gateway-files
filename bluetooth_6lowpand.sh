@@ -18,6 +18,8 @@
 
 set -e
 
+SCRIPT_VERSION="1.00"
+
 # logging
 LOG_LEVEL_ERROR=1
 LOG_LEVEL_WARN=2
@@ -139,6 +141,7 @@ GENERAL COMMAND LINE OPTIONS:
 -hciif | --hci_interface	: specify an alternate to hci0 interface (for use with -d)
 -lscon | --list_connections	: list current 6lowpan connections
 -h     | --help			: display this help
+-v     | --version		: display script version
 
 COMMAND LINE OPTIONS FOR CONFIG FILE MANAGEMENT:
 -wlon  | --whitelist_on		: enable whitelist
@@ -364,6 +367,10 @@ while [ "${#}" -gt 0 ]; do
 		else
 			exit 0
 		fi
+		;;
+	"-v" | "--version")
+		echo "${SCRIPT_VERSION}"
+		exit 0
 		;;
 	"-h" | "--help" | *)
 		print_help
