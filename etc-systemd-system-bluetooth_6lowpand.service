@@ -5,3 +5,4 @@ After=bluetooth.service
 [Service]
 Type=simple
 ExecStart=/usr/bin/bluetooth_6lowpand -d
+Restart=on-abort
