@@ -196,6 +196,14 @@ function delete_daemon_lock {
 	fi
 }
 
+# clean_up()
+# description:
+#   Clean up function executed when receiving a signal from trap (e.g. TERM)
+function clean_up {
+	delete_daemon_lock
+	exit
+}
+
 # check_daemon_lock()
 # description:
 #   If running in daemon mode, check for a lock file
@@ -247,7 +255,7 @@ function connect_device {
 
 # Set a shell trap event for when script exits to remove
 # the daemon lock file (if needed)
-trap "delete_daemon_lock" INT TERM EXIT
+trap "clean_up" INT TERM EXIT
 
 # set running options
 option_hci_interface="$(conf_find_value "HCI_INTERFACE" "${DEFAULT_HCI_INTERFACE}")"
