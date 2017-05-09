@@ -440,8 +440,7 @@ function find_ipsp_device {
 		__pid=$!
 		sleep ${__timeout}
 		# check if PID is running
-		__check_pid=$(ps xu | grep -v grep | awk '{ print $2 }' | grep ${__pid})
-		if [ "$?" == "0" ]; then
+		if [ -f "/proc/${__pid}/cmdline" ]; then
 			kill -SIGINT ${__pid}
 		fi
 	)
