@@ -491,14 +491,15 @@ if [ "${option_daemonize}" -eq "1" ]; then
 	create_daemon_lock
 
 	if [ "${option_skip_init}" -eq "0" ]; then
-		# INIT bluetooth modules / reset hci0
+		# INIT bluetooth modules
 		modprobe bluetooth_6lowpan
 		sleep 1
 		echo 1 > /sys/kernel/debug/bluetooth/6lowpan_enable
-		sleep 1
-		hciconfig ${option_hci_interface} reset
-		sleep 1
 	fi
+
+	# reset hci interface
+	hciconfig ${option_hci_interface} up
+	hciconfig ${option_hci_interface} reset
 
 	while :; do
 		find_ipsp_device ${option_timeout}
