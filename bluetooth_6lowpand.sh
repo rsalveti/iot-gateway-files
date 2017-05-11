@@ -62,7 +62,7 @@ MAX_SCANNING_INTERVAL=300
 #   2: default value
 function conf_find_value {
 	if [ -e "${CONFIG_PATH}" ]; then
-		line=$(grep --max-count=1 "^${1}${CONFIG_FILE_DELIMITER}" ${CONFIG_PATH})
+		line=$(grep -m 1 "^${1}${CONFIG_FILE_DELIMITER}" ${CONFIG_PATH})
 		if [ "${?}" -eq "0" ]; then
 			echo "${line#${1}${CONFIG_FILE_DELIMITER}}"
 		else
