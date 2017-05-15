@@ -103,7 +103,7 @@ option_loglevel="$(conf_find_value "LOG_LEVEL" "${LOG_LEVEL_INFO}")"
 function write_log {
 	if [ "${option_loglevel}" -ge "${1}" ]; then
 		shift
-		echo "$(date +%Y%m%d-%k%M%S) ${@}" >&2
+		echo "$(date +%F-%T) ${@}" >&2
 	fi
 }
 
